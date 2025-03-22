@@ -31,14 +31,7 @@ public class BLinkTree<K extends Comparable<K>, V> {
   }
 
   public void put(final K key, final V value) {
-    boolean insertedKey;
-    if (root.isInternal) {
-      insertedKey = root.putInternal(key, value);
-    } else {
-      insertedKey = root.putLeaf(key, value);
-    }
-
-    if (insertedKey) {
+    if (root.isInternal ? root.putInternal(key, value) : root.putLeaf(key, value)) {
       ++size;
     }
 
@@ -54,23 +47,15 @@ public class BLinkTree<K extends Comparable<K>, V> {
 
   @SuppressWarnings("unchecked")
   public boolean remove(final K key) {
-    // TODO: Finish implementation.
-    boolean removed;
-    if (root.isInternal) {
-      removed = root.removeInternal(key);
-    } else {
-      removed = root.removeLeaf(key);
-    }
-
-    if (removed) {
+    if (root.isInternal ? root.removeInternal(key) : root.removeLeaf(key)) {
       --size;
+      if (root.size == 1 && root.isInternal) {
+        root = (BLinkTreeNode<K>) root.getMappingAt(0).value;
+      }
+      return true;
     }
 
-    if (root.size == 1 && root.isInternal) {
-      root = (BLinkTreeNode<K>) root.getMappingAt(0).value;
-    }
-
-    return removed;
+    return false;
   }
 
   @SuppressWarnings("unchecked")

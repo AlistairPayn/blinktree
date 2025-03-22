@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 class BLinkTreeNode<K extends Comparable<K>> {
   final Object[] array;
@@ -79,7 +78,7 @@ class BLinkTreeNode<K extends Comparable<K>> {
     if (index >= array.length) {
       return null;
     }
-    Mapping<K> mapping = getMappingAt(index);
+    final var mapping = getMappingAt(index);
     if (mapping == null || !mapping.key.equals(key)) {
       return null;
     }
@@ -88,15 +87,9 @@ class BLinkTreeNode<K extends Comparable<K>> {
 
   @SuppressWarnings("unchecked")
   public boolean putInternal(final K key, final Object value) {
-    boolean insertedKey;
-
-    int index = search(key);
+    final var index = search(key);
     final var child = ((BLinkTreeNode<K>) getMappingAt(index).value);
-    if (child.isInternal) {
-      insertedKey = child.putInternal(key, value);
-    } else {
-      insertedKey = child.putLeaf(key, value);
-    }
+    final var insertedKey = child.isInternal ? child.putInternal(key, value) : child.putLeaf(key, value);
 
     if (!child.isOvercapacity()) { // the child is not full return
       return insertedKey;
@@ -118,15 +111,15 @@ class BLinkTreeNode<K extends Comparable<K>> {
       }
     }
 
-    var promoted = child.split(); // when no redistribution is possible split the child
+    final var promoted = child.split(); // when no redistribution is possible split the child
     insert(promoted.key, promoted.value, index + 1); // +1 because the node resulting from the split is greater keys
 
     return insertedKey;
   }
 
   public boolean putLeaf(final K key, final Object value) {
-    int index = search(key);
-    Mapping<K> mapping = getMappingAt(index);
+    final var index = search(key);
+    final var mapping = getMappingAt(index);
     if (mapping != null && mapping.key.equals(key)) { // overwrite value of an existing key
       mapping.value = value;
       return false;
@@ -140,8 +133,8 @@ class BLinkTreeNode<K extends Comparable<K>> {
     System.arraycopy(array, index, array, index + 1, size - index);
     setMappingAt(index, new Mapping<>(key, value));
     if (isInternal) {
-      Mapping<K> left = getMappingAt(index - 1);
-      Mapping<K> right = getMappingAt(index);
+      final var left = getMappingAt(index - 1);
+      final var right = getMappingAt(index);
       K temp = left.key;
       left.key = right.key;
       right.key = temp;
@@ -177,15 +170,9 @@ class BLinkTreeNode<K extends Comparable<K>> {
 
   @SuppressWarnings("unchecked")
   public boolean removeInternal(final K key) {
-    // TODO: Finish implementation.
-    boolean removed;
-    int index = search(key);
+    final var index = search(key);
     final var child = ((BLinkTreeNode<K>) getMappingAt(index).value);
-    if (child.isInternal) {
-      removed = child.removeInternal(key);
-    } else {
-      removed = child.removeLeaf(key);
-    }
+    final var removed = child.isInternal ? child.removeInternal(key) : child.removeLeaf(key);
 
     if (!child.isUnderCapacity()) { // the child is not full return
       return removed;
@@ -208,8 +195,7 @@ class BLinkTreeNode<K extends Comparable<K>> {
     }
 
     if (child.left != null && index > 0) { // when no redistribution is possible merge the child with its left sibling
-      K separator = getKeyAt(index - 1);
-      if (child.left.merge(separator)) {
+      if (child.left.merge(getKeyAt(index - 1))) {
         delete(index);
         return removed;
       }
@@ -226,9 +212,8 @@ class BLinkTreeNode<K extends Comparable<K>> {
   }
 
   public boolean removeLeaf(final K key) {
-    // TODO: Finish implementation.
-    int index = search(key);
-    Mapping<K> mapping = getMappingAt(index);
+    final var index = search(key);
+    final var mapping = getMappingAt(index);
     if (mapping != null && mapping.key.equals(key)) {
       delete(index);
       return true;
@@ -237,7 +222,6 @@ class BLinkTreeNode<K extends Comparable<K>> {
   }
 
   public void delete(final int index) {
-    // TODO: Finish implementation.
     if (isInternal) {
       if (index < size - 1) {
         setKeyAt(index - 1, getKeyAt(index));
@@ -255,7 +239,6 @@ class BLinkTreeNode<K extends Comparable<K>> {
   }
 
   public boolean merge(final K separator) {
-    // TODO: Finish implementation.
     if (size + right.size >= getMaxSize()) { // can't merge nodes if resulting node will be overcapacity
       return false;
     }
