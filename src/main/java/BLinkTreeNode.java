@@ -274,7 +274,6 @@ class BLinkTreeNode<K extends Comparable<K>> {
     return true;
   }
 
-  @SuppressWarnings("unchecked")
   public K tryTakeFromRightSibling(final K separator) {
     if (size >= getMaxSize() - 1 || right.size <= right.getMinSize()) {
       return null;
@@ -301,7 +300,6 @@ class BLinkTreeNode<K extends Comparable<K>> {
     return right.getKeyAt(0);
   }
 
-  @SuppressWarnings("unchecked")
   public K tryTakeFromLeftSibling(final K separator) {
     if (size >= getMaxSize() - 1 || left.size <= left.getMinSize()) {
       return null;
