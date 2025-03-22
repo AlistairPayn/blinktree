@@ -4,7 +4,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 class BLinkTreeNode<K extends Comparable<K>> {
   final Object[] array;
   final boolean isInternal;
-  final ReentrantReadWriteLock latch;
   BLinkTreeNode<K> left;
   BLinkTreeNode<K> right;
   int size;
@@ -13,7 +12,6 @@ class BLinkTreeNode<K extends Comparable<K>> {
     this.array = new Object[arraySize];
     this.size = 0;
     this.isInternal = isInternal;
-    this.latch = new ReentrantReadWriteLock();
   }
 
   public int getMinSize() {
@@ -277,7 +275,7 @@ class BLinkTreeNode<K extends Comparable<K>> {
   }
 
   @SuppressWarnings("unchecked")
-  public K tryTakeFromRightSibling(K separator) {
+  public K tryTakeFromRightSibling(final K separator) {
     if (size >= getMaxSize() - 1 || right.size <= right.getMinSize()) {
       return null;
     }
@@ -295,16 +293,16 @@ class BLinkTreeNode<K extends Comparable<K>> {
     right.size -= delta;
 
     if (isInternal) {
-      separator = getKeyAt(size - 1);
+      K key = getKeyAt(size - 1);
       setKeyAt(size - 1, null);
-      return separator;
+      return key;
     }
 
     return right.getKeyAt(0);
   }
 
   @SuppressWarnings("unchecked")
-  public K tryTakeFromLeftSibling(K separator) {
+  public K tryTakeFromLeftSibling(final K separator) {
     if (size >= getMaxSize() - 1 || left.size <= left.getMinSize()) {
       return null;
     }
