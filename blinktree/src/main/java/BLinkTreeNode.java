@@ -1,15 +1,13 @@
-package blinktree;
-
 import java.util.Arrays;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 class BLinkTreeNode<K extends Comparable<K>> {
   final Object[] array;
+  final boolean isInternal;
+  final ReentrantReadWriteLock latch;
   BLinkTreeNode<K> left;
   BLinkTreeNode<K> right;
   int size;
-  final boolean isInternal;
-  final ReentrantReadWriteLock latch;
 
   protected BLinkTreeNode(final int arraySize, final boolean isInternal) {
     this.array = new Object[arraySize];

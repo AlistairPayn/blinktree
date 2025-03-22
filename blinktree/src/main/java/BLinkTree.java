@@ -1,5 +1,3 @@
-package blinktree;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -14,10 +12,7 @@ public class BLinkTree<K extends Comparable<K>, V> {
     this(maxSize / 2, maxSize);
   }
 
-  public BLinkTree(
-          final int minSize,
-          final int maxSize
-  ) {
+  public BLinkTree(final int minSize, final int maxSize) {
     if (maxSize < 4) {
       throw new RuntimeException("BTree node size must be greater than 4");
     }

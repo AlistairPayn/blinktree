@@ -1,5 +1,3 @@
-package blinktree;
-
 import java.util.Objects;
 
 final public class Mapping<K extends Comparable<K>> implements Comparable<Mapping<K>> {

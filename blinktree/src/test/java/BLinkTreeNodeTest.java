@@ -1,5 +1,3 @@
-package blinktree;
-
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
@@ -231,78 +229,78 @@ class BLinkTreeNodeTest {
      * This means position can only ever be > 0 and the position of the key inserted is position + 1.
      */
     return Stream.iterate(4, i -> i + 1)
-            .limit(8)
-            .flatMap(size -> Stream.iterate(0, i -> ++i)
-                    .limit(size - 1)
-                    .map(position ->
-                            DynamicTest.dynamicTest("Position " + position + "/" + (size - 1), () -> {
-                              final var node = new BLinkTreeNode<Integer>(size, true);
+        .limit(8)
+        .flatMap(size -> Stream.iterate(0, i -> ++i)
+            .limit(size - 1)
+            .map(position ->
+                DynamicTest.dynamicTest("Position " + position + "/" + (size - 1), () -> {
+                  final var node = new BLinkTreeNode<Integer>(size, true);
 
-                              int insertKey = 15;
-                              int insertValue = 14;
-                              for (int i = 0, k = 1, v = 0; i < size - 1; ++i, k += 2, v += 2) {
-                                if (i == position) {
-                                  insertKey = k;
-                                  insertValue = v;
-                                  k += 2;
-                                  v += 2;
-                                }
-                                node.array[i] = new Mapping<>(k, v);
-                                ++node.size;
-                              }
+                  int insertKey = 15;
+                  int insertValue = 14;
+                  for (int i = 0, k = 1, v = 0; i < size - 1; ++i, k += 2, v += 2) {
+                    if (i == position) {
+                      insertKey = k;
+                      insertValue = v;
+                      k += 2;
+                      v += 2;
+                    }
+                    node.array[i] = new Mapping<>(k, v);
+                    ++node.size;
+                  }
 
-                              node.insert(insertKey, insertValue, position + 1);
-                              assertEquals(size, node.size);
+                  node.insert(insertKey, insertValue, position + 1);
+                  assertEquals(size, node.size);
 
-                              for (int i = 0, k = 1, v = 0; i < size; ++i, k += 2, v += 2) {
-                                if (i == position) {
-                                  assertEquals(k, node.getKeyAt(i));
-                                  assertEquals(v, node.getMappingAt(i + 1).value);
-                                } else if (i == position + 1) {
-                                  assertEquals(k, node.getKeyAt(i));
-                                  assertEquals(v, node.getMappingAt(i - 1).value);
-                                } else {
-                                  assertEquals(k, node.getKeyAt(i));
-                                  assertEquals(v, node.getMappingAt(i).value);
-                                }
-                              }
-                            })
-                    )
-            );
+                  for (int i = 0, k = 1, v = 0; i < size; ++i, k += 2, v += 2) {
+                    if (i == position) {
+                      assertEquals(k, node.getKeyAt(i));
+                      assertEquals(v, node.getMappingAt(i + 1).value);
+                    } else if (i == position + 1) {
+                      assertEquals(k, node.getKeyAt(i));
+                      assertEquals(v, node.getMappingAt(i - 1).value);
+                    } else {
+                      assertEquals(k, node.getKeyAt(i));
+                      assertEquals(v, node.getMappingAt(i).value);
+                    }
+                  }
+                })
+            )
+        );
   }
 
   @TestFactory
   Stream<DynamicTest> testLeafNodeInsert() {
     return Stream.iterate(4, i -> i + 1)
-            .limit(8)
-            .flatMap(size -> Stream.iterate(0, i -> ++i)
-                    .limit(size - 1)
-                    .map(position ->
-                            DynamicTest.dynamicTest("Position " + position + "/" + (size - 1), () -> {
-                              final var node = new BLinkTreeNode<Integer>(size, false);
+        .limit(8)
+        .flatMap(size -> Stream.iterate(0, i -> ++i)
+            .limit(size - 1)
+            .map(position ->
+                DynamicTest.dynamicTest("Position " + position + "/" + (size - 1), () -> {
+                  final var node = new BLinkTreeNode<Integer>(size, false);
 
-                              int insertKey = 7;
-                              int insertValue = 70;
-                              for (int i = 0, k = 0; i < size - 1; ++i, ++k) {
-                                if (i == position) {
-                                  insertKey = k;
-                                  insertValue = k * 10;
-                                  ++k;
-                                }
-                                node.array[i] = new Mapping<>(k, k * 10);
-                                ++node.size;
-                              }
+                  int insertKey = 7;
+                  int insertValue = 70;
+                  for (int i = 0, k = 0; i < size - 1; ++i, ++k) {
+                    if (i == position) {
+                      insertKey = k;
+                      insertValue = k * 10;
+                      ++k;
+                    }
+                    node.array[i] = new Mapping<>(k, k * 10);
+                    ++node.size;
+                  }
 
-                              node.insert(insertKey, insertValue, position);
-                              assertEquals(size, node.size);
+                  node.insert(insertKey, insertValue, position);
+                  assertEquals(size, node.size);
 
-                              for (int i = 0; i < size; ++i) {
-                                assertEquals(i, node.getKeyAt(i));
-                                assertEquals(i * 10, node.getMappingAt(i).value);
-                              }
-                            })
-                    )
-            );
+                  for (int i = 0; i < size; ++i) {
+                    assertEquals(i, node.getKeyAt(i));
+                    assertEquals(i * 10, node.getMappingAt(i).value);
+                  }
+                })
+            )
+        );
   }
 
   @TestFactory
@@ -311,69 +309,69 @@ class BLinkTreeNodeTest {
      * This means position can only ever be > 0 and the position of the key inserted is position + 1.
      */
     return Stream.iterate(4, i -> i + 1)
-            .limit(8)
-            .flatMap(size -> Stream.iterate(0, i -> ++i)
-                    .limit(size)
-                    .map(position ->
-                            DynamicTest.dynamicTest("Position " + position + "/" + (size - 1), () -> {
-                              final var node = new BLinkTreeNode<Integer>(size, true);
+        .limit(8)
+        .flatMap(size -> Stream.iterate(0, i -> ++i)
+            .limit(size)
+            .map(position ->
+                DynamicTest.dynamicTest("Position " + position + "/" + (size - 1), () -> {
+                  final var node = new BLinkTreeNode<Integer>(size, true);
 
-                              for (int i = 0, k = 1, v = 0; i < size; ++i, k += 2, v += 2) {
-                                node.array[i] = new Mapping<>(k, v);
-                                ++node.size;
-                              }
+                  for (int i = 0, k = 1, v = 0; i < size; ++i, k += 2, v += 2) {
+                    node.array[i] = new Mapping<>(k, v);
+                    ++node.size;
+                  }
 
-                              node.delete(position);
-                              assertEquals(size - 1, node.size);
+                  node.delete(position);
+                  assertEquals(size - 1, node.size);
 
-                              for (int i = 0, k = 1, v = 0; i < size - 1; ++i, k += 2, v += 2) {
-                                if (i < position) {
-                                  if (i == node.size - 1) {
-                                    assertNull(node.getKeyAt(i));
-                                  } else {
-                                    assertEquals(k, node.getKeyAt(i));
-                                  }
-                                  assertEquals(v, node.getMappingAt(i).value);
-                                } else {
-                                  assertEquals(k + 2, node.getKeyAt(i));
-                                  assertEquals(v + 2, node.getMappingAt(i).value);
-                                }
-                              }
-                            })
-                    )
-            );
+                  for (int i = 0, k = 1, v = 0; i < size - 1; ++i, k += 2, v += 2) {
+                    if (i < position) {
+                      if (i == node.size - 1) {
+                        assertNull(node.getKeyAt(i));
+                      } else {
+                        assertEquals(k, node.getKeyAt(i));
+                      }
+                      assertEquals(v, node.getMappingAt(i).value);
+                    } else {
+                      assertEquals(k + 2, node.getKeyAt(i));
+                      assertEquals(v + 2, node.getMappingAt(i).value);
+                    }
+                  }
+                })
+            )
+        );
   }
 
   @TestFactory
   Stream<DynamicTest> testLeafNodeDelete() {
     return Stream.iterate(4, i -> i + 1)
-            .limit(8)
-            .flatMap(size -> Stream.iterate(0, i -> ++i)
-                    .limit(size - 1)
-                    .map(position ->
-                            DynamicTest.dynamicTest("Position " + position + "/" + (size - 1), () -> {
-                              final var node = new BLinkTreeNode<Integer>(size, false);
+        .limit(8)
+        .flatMap(size -> Stream.iterate(0, i -> ++i)
+            .limit(size - 1)
+            .map(position ->
+                DynamicTest.dynamicTest("Position " + position + "/" + (size - 1), () -> {
+                  final var node = new BLinkTreeNode<Integer>(size, false);
 
-                              for (int i = 0, k = 0; i < size; ++i, ++k) {
-                                node.array[i] = new Mapping<>(k, k * 10);
-                                ++node.size;
-                              }
+                  for (int i = 0, k = 0; i < size; ++i, ++k) {
+                    node.array[i] = new Mapping<>(k, k * 10);
+                    ++node.size;
+                  }
 
-                              node.delete(position);
-                              assertEquals(size - 1, node.size);
+                  node.delete(position);
+                  assertEquals(size - 1, node.size);
 
-                              for (int i = 0; i < size - 1; ++i) {
-                                if (i < position) {
-                                  assertEquals(i, node.getKeyAt(i));
-                                  assertEquals(i * 10, node.getMappingAt(i).value);
-                                } else {
-                                  assertEquals(i + 1, node.getKeyAt(i));
-                                  assertEquals((i + 1) * 10, node.getMappingAt(i).value);
-                                }
-                              }
-                            })
-                    )
-            );
+                  for (int i = 0; i < size - 1; ++i) {
+                    if (i < position) {
+                      assertEquals(i, node.getKeyAt(i));
+                      assertEquals(i * 10, node.getMappingAt(i).value);
+                    } else {
+                      assertEquals(i + 1, node.getKeyAt(i));
+                      assertEquals((i + 1) * 10, node.getMappingAt(i).value);
+                    }
+                  }
+                })
+            )
+        );
   }
 
   @Test

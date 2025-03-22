@@ -1,5 +1,3 @@
-package blinktree;
-
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -17,12 +15,12 @@ public class BLinkTreeBenchmarkTest {
     final var random = new Random(testSeed);
 
     final var batch = Stream.generate(random::nextInt)
-            .limit(testSize)
-            .toList();
+        .limit(testSize)
+        .toList();
 
-    final var tree = new BLinkTree<Integer, Integer>(1000);
+    final var tree = new BLinkTree<Integer, Integer>(100);
     {
-      System.out.println("Testing BLinkTree random insertions: ");
+      System.out.println("Benchmarking BLinkTree random insertions: ");
       var start = System.nanoTime();
       batch.forEach((i) -> tree.put(i, i));
       var end = System.nanoTime();
@@ -30,7 +28,7 @@ public class BLinkTreeBenchmarkTest {
     }
 
     {
-      System.out.println("Testing BLinkTree random find: ");
+      System.out.println("Benchmarking BLinkTree random find: ");
       var start = System.nanoTime();
       batch.forEach(tree::get);
       var end = System.nanoTime();
@@ -41,12 +39,12 @@ public class BLinkTreeBenchmarkTest {
   @Test
   void benchmarkBLinkTreeSequential() {
     final var batch = Stream.iterate(0, i -> i + 1)
-            .limit(testSize)
-            .toList();
+        .limit(testSize)
+        .toList();
 
-    final var tree = new BLinkTree<Integer, Integer>(1000);
+    final var tree = new BLinkTree<Integer, Integer>(100);
     {
-      System.out.println("Testing BLinkTree random insertions: ");
+      System.out.println("Benchmarking BLinkTree sequential insertions: ");
       var start = System.nanoTime();
       batch.forEach((i) -> tree.put(i, i));
       var end = System.nanoTime();
@@ -54,7 +52,7 @@ public class BLinkTreeBenchmarkTest {
     }
 
     {
-      System.out.println("Testing BLinkTree random find: ");
+      System.out.println("Benchmarking BLinkTree sequential find: ");
       var start = System.nanoTime();
       batch.forEach(tree::get);
       var end = System.nanoTime();
@@ -67,12 +65,12 @@ public class BLinkTreeBenchmarkTest {
     final var random = new Random(testSeed);
 
     final var batch = Stream.generate(random::nextInt)
-            .limit(testSize)
-            .toList();
+        .limit(testSize)
+        .toList();
 
     final var tree = new TreeMap<Integer, Integer>();
     {
-      System.out.println("Testing TreeMap random insertions: ");
+      System.out.println("Benchmarking TreeMap random insertions: ");
       var start = System.nanoTime();
       batch.forEach((i) -> tree.put(i, i));
       var end = System.nanoTime();
@@ -80,7 +78,7 @@ public class BLinkTreeBenchmarkTest {
     }
 
     {
-      System.out.println("Testing TreeMap random find: ");
+      System.out.println("Benchmarking TreeMap random find: ");
       var start = System.nanoTime();
       batch.forEach(tree::get);
       var end = System.nanoTime();
@@ -91,12 +89,12 @@ public class BLinkTreeBenchmarkTest {
   @Test
   void benchmarkTreeMapSequential() {
     final var batch = Stream.iterate(0, i -> i + 1)
-            .limit(testSize)
-            .toList();
+        .limit(testSize)
+        .toList();
 
     final var tree = new TreeMap<Integer, Integer>();
     {
-      System.out.println("Testing TreeMap random insertions: ");
+      System.out.println("Benchmarking TreeMap sequential insertions: ");
       var start = System.nanoTime();
       batch.forEach((i) -> tree.put(i, i));
       var end = System.nanoTime();
@@ -104,7 +102,7 @@ public class BLinkTreeBenchmarkTest {
     }
 
     {
-      System.out.println("Testing TreeMap random find: ");
+      System.out.println("Benchmarking TreeMap sequential find: ");
       var start = System.nanoTime();
       batch.forEach(tree::get);
       var end = System.nanoTime();

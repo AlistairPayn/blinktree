@@ -1,5 +1,3 @@
-package blinktree;
-
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
@@ -36,15 +34,15 @@ public class BLinkTreeFuzzTest {
     }
     var cur = iterator.next();
     assertTrue(
-            prev.key.compareTo(cur.key) < 0,
-            "BLinkTree LeafNode keys are not ascending, prev " + prev + ", next " + cur
+        prev.key.compareTo(cur.key) < 0,
+        "BLinkTree LeafNode keys are not ascending, prev " + prev + ", next " + cur
     );
     while (iterator.hasNext()) {
       prev = cur;
       cur = iterator.next();
       assertTrue(
-              prev.key.compareTo(cur.key) < 0,
-              "BLinkTree LeafNode keys are not ascending, prev " + prev + ", next " + cur
+          prev.key.compareTo(cur.key) < 0,
+          "BLinkTree LeafNode keys are not ascending, prev " + prev + ", next " + cur
       );
     }
   }
@@ -54,13 +52,13 @@ public class BLinkTreeFuzzTest {
 
     final var pairs = new ArrayList<Mapping<Integer>>();
     Stream.iterate(0, i -> ++i)
-            .map(key -> {
-              byte[] value = new byte[255];
-              rnd.nextBytes(value);
-              return new Mapping<>(key, value);
-            })
-            .limit(batchSize)
-            .forEach(pairs::add);
+        .map(key -> {
+          byte[] value = new byte[255];
+          rnd.nextBytes(value);
+          return new Mapping<>(key, value);
+        })
+        .limit(batchSize)
+        .forEach(pairs::add);
 
     final var inserted = new HashSet<Integer>();
     final var deleted = new HashSet<Integer>();
@@ -133,8 +131,8 @@ public class BLinkTreeFuzzTest {
     final var numbers = new ArrayList<Integer>();
 
     Stream.generate(() -> rnd.nextInt(0, 100))
-            .limit(batchSize)
-            .forEach(numbers::add);
+        .limit(batchSize)
+        .forEach(numbers::add);
 
     shuffle(numbers, rnd);
 
@@ -168,34 +166,34 @@ public class BLinkTreeFuzzTest {
   @TestFactory
   public Stream<DynamicTest> fuzzTest() {
     return Stream.generate(() -> ThreadLocalRandom.current().nextLong(-100000, 100000))
-            .limit(100)
-            .flatMap((seed) -> {
-                      final var batchSize = ThreadLocalRandom.current().nextInt(100, 1000);
-                      final var nodeSize = ThreadLocalRandom.current().nextInt(4, 100);
-                      return Stream.of(
-                              DynamicTest.dynamicTest(
-                                      "Test random inserting stage followed by random delete stage"
-                                              + ", seed " + seed
-                                              + ", batchSize " + batchSize
-                                              + ", nodeSize " + nodeSize,
-                                      () -> testRandomAddAllRemoveAll(seed, batchSize, nodeSize)
-                              ),
-                              DynamicTest.dynamicTest(
-                                      "Test random unique inserts and deletes"
-                                              + ", seed " + seed
-                                              + ", batchSize " + batchSize
-                                              + ", nodeSize " + nodeSize,
-                                      () -> testRandomAddRemoveUnique(seed, batchSize, nodeSize)
-                              ),
-                              DynamicTest.dynamicTest(
-                                      "Test random duplicate inserts and deletes"
-                                              + ", seed " + seed
-                                              + ", batchSize " + batchSize
-                                              + ", nodeSize " + nodeSize,
-                                      () -> testRandomAddRemoveDuplicates(seed, batchSize, nodeSize)
-                              )
-                      );
-                    }
-            );
+        .limit(100)
+        .flatMap((seed) -> {
+              final var batchSize = ThreadLocalRandom.current().nextInt(100, 1000);
+              final var nodeSize = ThreadLocalRandom.current().nextInt(4, 100);
+              return Stream.of(
+                  DynamicTest.dynamicTest(
+                      "Test random inserting stage followed by random delete stage"
+                          + ", seed " + seed
+                          + ", batchSize " + batchSize
+                          + ", nodeSize " + nodeSize,
+                      () -> testRandomAddAllRemoveAll(seed, batchSize, nodeSize)
+                  ),
+                  DynamicTest.dynamicTest(
+                      "Test random unique inserts and deletes"
+                          + ", seed " + seed
+                          + ", batchSize " + batchSize
+                          + ", nodeSize " + nodeSize,
+                      () -> testRandomAddRemoveUnique(seed, batchSize, nodeSize)
+                  ),
+                  DynamicTest.dynamicTest(
+                      "Test random duplicate inserts and deletes"
+                          + ", seed " + seed
+                          + ", batchSize " + batchSize
+                          + ", nodeSize " + nodeSize,
+                      () -> testRandomAddRemoveDuplicates(seed, batchSize, nodeSize)
+                  )
+              );
+            }
+        );
   }
 }
